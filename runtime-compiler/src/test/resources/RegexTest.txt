@@ -1,0 +1,59 @@
+import java.io.IOException;
+import java.io.StringWriter;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import com.camerontec.cameronfix.util.data.ITagValue;
+
+import test.something.AbstractFixStringTransformer;
+import test.something.FixConstants;
+import test.something.constants.fix50sp2ep247.TagNumConstantsFix50Sp2Ep247;
+import test.something.dictionary.fixml.FixmlHierarchy;
+import test.utils.ConverterUtil;
+import test.utils.StringUtil;
+import test.utils.xml.XmlUtil;
+
+/**
+ * Sample for regex testing which contains javadocs and comments.<br>
+ * The following is a copy from FiXMLTransformer.
+ * <p>
+ * This transformer requires an Unified-FIXDictionary XML file for conversion.<br>
+ *
+ * Required parameters must be given by a &lt;Properties&gt; block:
+ * <pre>
+ * &lt;Properties&gt;
+ *     &lt;Property name="fixVersion"&gt;FIX_VERSION_TO_USE&lt;/Property&gt;
+ *     &lt;Property name="fixRepositoryFile"&gt;unifiedDictionary.xml&lt;/Property&gt;
+ *     &lt;Property name="cameronDictionaryName"&gt;cameronFIX_DictionaryName&lt;/Property&gt;
+ *     &lt;Property name="xmlNamespace"&gt;XML namespace (can be omitted if not needed)&lt;/Property&gt;
+ *     &lt;Property name="failOnUnknownTag"&gt;true or false&lt;/Property&gt;
+ * &lt;/Properties&gt;
+ * </pre>
+ *
+ * <ul>
+ *     <li>'fixVersion' property should be the FIX version string used in the unified dictionary (e.g. FIX.5.0SP2_EP257).</li>
+ *     <li>'fixRepositoryFile' property should be file found in class path.</li>
+ *     <li>'xmlNamespace' is the value found in the 'xml:ns' attribute in header of each FIXML message</li>
+ *     <li>'cameronDictionaryName' must be the name for the dictionary to use when working with the cameron API (e.g. 5.0SP2 or FIX.4.4)</li>
+ * <br>
+ * @author David Michaelis (David.Michaelis@baaderbank.de)
+ * @version 8.0.19 - 2020-07-17
+ */
+
+// Single line comment containing the evil class word
+
+/* One line block comment containing the evil interface word */
+
+/* Multi line
+ * block comment which contains
+ * the interface regex trigger
+ * and the
+ * class regex trigger
+ * to fool the regex parser 
+ */
+public class RegexTest extends AbstractFixStringTransformer implements TagNumConstantsFix50Sp2Ep247 {
+    
+    
+}
