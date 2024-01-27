@@ -19,20 +19,20 @@
         <dep.slf4j.version>2.0.11</dep.slf4j.version>
         <dep.junit.version>5.10.1</dep.junit.version>
         <dep.mockito.version>5.10.0</dep.mockito.version>
-        
+
         <plugin.checkstyle.version>10.12.7</plugin.checkstyle.version>
-        
+
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        
+
         <maven.javadoc.skip>false</maven.javadoc.skip>
         <check.skip-javadoc>false</check.skip-javadoc>
 
         <check.skip-checkstyle>false</check.skip-checkstyle>
         <check.skip-pmd>false</check.skip-pmd>
-        
+
         <parentDir>${project.basedir}</parentDir>
     </properties>
 
@@ -66,22 +66,22 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
-                        
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -115,13 +115,13 @@
                     <artifactId>maven-plugin-plugin</artifactId>
                     <version>3.10.1</version>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.codehaus.plexus</groupId>
                     <artifactId>plexus-component-metadata</artifactId>
                     <version>2.1.1</version>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
@@ -169,7 +169,7 @@
                         </execution>
                     </executions>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
@@ -189,7 +189,7 @@
                         </archive>
                     </configuration>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -202,7 +202,7 @@
                         </systemPropertyVariables>
                     </configuration>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -281,7 +281,7 @@
                         <!-- minimum number of tokens that need to be duplicated before it causes a violation: -->
                         <minimumTokens>100</minimumTokens>
                         <rulesets>
-                            <ruleset>${parentDir}/src/main/resources/pmd_rules.xml</ruleset>
+                            <ruleset>${parentDir}/src/test/resources/team/pmd-rules.xml</ruleset>
                         </rulesets>
                     </configuration>
                 </plugin>
@@ -294,7 +294,7 @@
                     <configuration>
                         <skip>${check.skip-checkstyle}</skip>
                         <failOnViolation>true</failOnViolation>
-                        <configLocation>${parentDir}/src/main/resources/checkstyle_rules.xml</configLocation>
+                        <configLocation>${parentDir}/src/test/resources/team/checkstyle-rules.xml</configLocation>
                         <excludes>*.jpg,*.jpeg,*.gif,*.png,*.db,*.csv</excludes>
                         <consoleOutput>true</consoleOutput>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
@@ -346,7 +346,7 @@
                      <version>3.1.0</version>
                 </plugin>
             </plugins>
-            
+
         </pluginManagement>
 
     </build>
@@ -370,12 +370,12 @@
                         </reports>
                     </reportSet>
                 </reportSets>
-            </plugin>            
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
             </plugin>
-        </plugins>    
+        </plugins>
     </reporting>
 
     <distributionManagement>
@@ -392,7 +392,7 @@
           <url>file://${java.io.tmpdir}/${project.name}-site-prepared</url>
         </site>
     </distributionManagement>
-    
+
     <scm>
         <connection>scm:git:https://github.com/hypfvieh/${project.name}.git</connection>
         <developerConnection>scm:git:https://github.com/hypfvieh/${project.name}.git</developerConnection>
