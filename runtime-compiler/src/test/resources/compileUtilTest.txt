@@ -1,0 +1,7 @@
+public class HocusPocus {
+
+    public static void main(String[] _args) {
+        System.out.printf("%s %s%n", "Hocus", "Pocus");
+    }
+
+}

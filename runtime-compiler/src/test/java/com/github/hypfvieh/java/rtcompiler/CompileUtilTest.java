@@ -14,9 +14,9 @@ class CompileUtilTest extends Assertions {
 
     @Test
     void testGetClassNameFromSourceComplex() throws IOException {
-        String source = Files.readString(Path.of("src/test/resources/RegexTest.txt"));
+        String source = Files.readString(Path.of("src/test/resources/compileUtilTest.txt"));
         String className = CompileUtil.getClassNameFromSource(source);
-        assertEquals("RegexTest", className);
+        assertEquals("HocusPocus", className);
     }
 
     @Test
