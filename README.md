@@ -4,7 +4,7 @@ This project provides a helper library and a maven plugin to compile and run Jav
 
 ## Library Usage
 
-To get this library to work, you have to execute your program using a JDK or a custom JRE which includes the jdk.compiler module.
+To get this library to work, you have to execute your program using a JDK.
 No other dependency besides slf4j is needed.
 
 Add the library to your project:
