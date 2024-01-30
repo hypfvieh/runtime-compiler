@@ -49,7 +49,7 @@ You can use the RuTiCo maven plugin to compile and run Java source during your m
 The source does not have to be part of the regular source folder for your project. It can be anywhere
 as long as RuTiCo can resolve the path.
 
-For a full list of possible configuration parameters look at: https://hypfvieh.github.io/rutico/
+For a full list of possible configuration parameters look [here](https://hypfvieh.github.io/runtime-compiler/java-runtime-compiler-maven-plugin/execute-mojo.html)
 
 Example:
 ```
