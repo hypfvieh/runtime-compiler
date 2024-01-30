@@ -10,7 +10,7 @@
     <name>runtime-compiler</name>
     <inceptionYear>2024</inceptionYear>
 
-    <url>https://github.com/hypfvieh/runtime-compiler</url>
+    <url>https://hypfvieh.github.io/rutico/</url>
 
     <modules>
         <module>runtime-compiler-lib</module>
@@ -24,7 +24,6 @@
 
         <plugin.checkstyle.version>10.12.7</plugin.checkstyle.version>
         <plugin.pmd.version>6.55.0</plugin.pmd.version>
-
 
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
@@ -53,7 +52,7 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>${dep.mockito.version}</version>
+                <version>${dep.mockito.version}</version>                
             </dependency>
 
             <dependency>
@@ -84,6 +83,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-descriptor</id>
+                        <goals>
+                            <goal>attach-descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -166,14 +173,11 @@
                             <configuration>
                                 <rules>
                                     <requireMavenVersion>
-                                        <version>3.5.0</version>
+										<version>3.5.0</version>
                                     </requireMavenVersion>
                                     <requireJavaVersion>
                                         <version>${maven.compiler.release}</version>
                                     </requireJavaVersion>
-                                    <requireOS>
-                                        <family>unix</family>
-                                    </requireOS>
                                 </rules>
                             </configuration>
                         </execution>
@@ -207,9 +211,6 @@
                     <configuration>
                         <forkCount>1</forkCount>
                         <reuseForks>false</reuseForks>
-                        <systemPropertyVariables>
-                            <logback.configurationFile>${basedir}/src/test/resources/logback.xml</logback.configurationFile>
-                        </systemPropertyVariables>
                     </configuration>
                 </plugin>
 
@@ -224,7 +225,7 @@
                                 <goal>compile</goal>
                             </goals>
                             <configuration>
-                                <release>${maven.compiler.source}</release>
+                                <release>${maven.compiler.release}</release>
                             </configuration>
                         </execution>
                     </executions>
@@ -385,9 +386,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-report-plugin</artifactId>
-                <configuration>
-                    <outputDirectory>${project.site}</outputDirectory>
-                </configuration>
             </plugin>
 
             <plugin>

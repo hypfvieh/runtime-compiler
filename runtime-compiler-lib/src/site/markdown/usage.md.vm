@@ -1,8 +1,4 @@
-# RuTiCo (_Ru_n_ti_me-_Co_mpiler)
-
-This project provides a helper library and a maven plugin to compile and run Java source code at runtime.
-
-## Library Usage
+# Usage
 
 To get this library to work, you have to execute your program using a JDK.
 No other dependency besides slf4j is needed.
@@ -43,38 +39,3 @@ It is possible to use inheritance of sources which also have to be compiled.
 E.g. when `ClassB` extends `ClassA`, RuTiCo will try to compile `ClassB` which fails.
 Due to the errors created by the compiler RuTiCo will try to find `ClassA` using the compiler error.
 After compiling `ClassA` the failed compilation of `ClassB` is retried.
-
-## Maven plugin usage
-You can use the RuTiCo maven plugin to compile and run Java source during your maven build.
-The source does not have to be part of the regular source folder for your project. It can be anywhere
-as long as RuTiCo can resolve the path.
-
-For a full list of possible configuration parameters look at: https://hypfvieh.github.io/rutico/
-
-Example:
-```
-    <plugin>
-        <groupId>com.github.hypfvieh.java</groupId>
-        <artifactId>runtime-compiler-maven-plugin</artifactId>
-        <version>${project.version}</version>
-        <executions>
-            <!-- Run plugin with specific execution:
-                    mvn com.github.hypfvieh.java:runtime-compiler-maven-plugin:execute@execution-id
-            -->
-            <execution>
-                <id>print-env</id>
-                <goals>
-                    <goal>execute</goal>
-                </goals>
-                <phase>compile</phase>
-                <configuration>
-                    <workingDirectory>${project.basedir}</workingDirectory>
-                    <classOutputDir>target/rutico</classOutputDir>
-                    <mainClass>com.github.hypfvieh.java.sample.ShowEnvProps</mainClass>
-                    <sourceLocations>
-                        <sourceLocation>other/sources</sourceLocation>
-                    </sourceLocations>
-                </configuration>
-            </execution>
-    </plugin>
-```
