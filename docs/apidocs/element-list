@@ -1,0 +1,12 @@
+com.github.hypfvieh.java.java_runtime_compiler_maven_plugin
+com.github.hypfvieh.java.maven.plugin.plexus
+com.github.hypfvieh.java.maven.plugin.rtcompiler
+com.github.hypfvieh.java.rtcompiler
+com.github.hypfvieh.java.rtcompiler.classloader
+com.github.hypfvieh.java.rtcompiler.exception
+com.github.hypfvieh.java.rtcompiler.filemanager
+com.github.hypfvieh.java.rtcompiler.listener
+com.github.hypfvieh.java.rtcompiler.resources
+com.github.hypfvieh.java.rtcompiler.resources.locator
+com.github.hypfvieh.java.rtcompiler.resources.writer
+com.github.hypfvieh.java.rtcompiler.util
