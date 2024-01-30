@@ -45,18 +45,21 @@ public class CompilerListener implements DiagnosticListener<JavaFileObject> {
 
     @Override
     public void report(Diagnostic<? extends JavaFileObject> _diagnostic) {
-        DiagnosticLocation loc = new DiagnosticLocation(Objects.toString(_diagnostic.getSource(), "{unknown source}"), (int) _diagnostic.getLineNumber(), (int) _diagnostic.getColumnNumber());
+        DiagnosticLocation loc = new DiagnosticLocation(Objects.toString(_diagnostic.getSource(), "{unknown source}"),
+            (int) _diagnostic.getLineNumber(), (int) _diagnostic.getColumnNumber());
         String msg = _diagnostic.getMessage(null) + " (" + _diagnostic.getCode() + ")";
 
         String logMsg = loc + ": " + msg;
 
         if (_diagnostic.getCode() != null) {
             if (_diagnostic.getCode().startsWith("compiler.err.cant.resolve")) {
-                String missingClass = CompileUtil.findMissingSymbolName(_diagnostic.toString());
+                String missingClass = Optional.ofNullable(extractMissing(_diagnostic))
+                    .orElse(CompileUtil.findMissingSymbolName(_diagnostic.getMessage(Locale.ENGLISH)));
                 if (missingClass != null) {
                     putToMap(Type.CLASS, missingClass);
                 } else {
-                    String missingVar = CompileUtil.findMissingVariable(_diagnostic.toString());
+                    String missingVar = Optional.ofNullable(extractMissing(_diagnostic))
+                        .orElse(CompileUtil.findMissingVariable(_diagnostic.getMessage(Locale.ENGLISH)));
                     if (missingVar != null) {
                         putToMap(Type.VARIABLE, missingVar);
                     }
@@ -77,6 +80,25 @@ public class CompilerListener implements DiagnosticListener<JavaFileObject> {
         if (isError) {
             compileErrors.add(new CompileException(msg, loc));
         }
+    }
+
+    /**
+     * Extracts missing class names or variable names from a diagnostic message.
+     *
+     * @param _diagnostic message to process
+     * @return extracted error part or null
+     */
+    private String extractMissing(Diagnostic<? extends JavaFileObject> _diagnostic) {
+        if (_diagnostic == null) {
+            return null;
+        }
+
+        try {
+            String str = String.valueOf(_diagnostic.getSource().getCharContent(true));
+            return str.substring((int) _diagnostic.getStartPosition(), (int) _diagnostic.getEndPosition());
+        } catch (IOException _ex) {
+        }
+        return null;
     }
 
     private void putToMap(Type _type, String _content) {

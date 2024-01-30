@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.tools.*;
+import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject.Kind;
 
 /**
@@ -51,16 +52,17 @@ public class BaseCompiler {
 
     private final Map<Type, Set<String>>   missingSymbols;
 
-    private File[] classPath = Arrays.stream(System.getProperty("java.class.path", "").split(String.valueOf(File.pathSeparatorChar))).map(e -> new File(e)).toArray(File[]::new);
+    private File[]                         classPath       =
+        Arrays.stream(System.getProperty("java.class.path", "").split(String.valueOf(File.pathSeparatorChar))).map(e -> new File(e)).toArray(File[]::new);
 
-    private AbstractResourceLocator sourceLocator;
-    private AbstractResourceLocator classFileLocator;
-    private IResourceWriter classFileFactory;
+    private AbstractResourceLocator        sourceLocator;
+    private AbstractResourceLocator        classFileLocator;
+    private IResourceWriter                classFileFactory;
 
-    private boolean debugLines;
-    private boolean debugVars;
-    private boolean debugSource;
-    private Charset sourceCharset;
+    private boolean                        debugLines;
+    private boolean                        debugVars;
+    private boolean                        debugSource;
+    private Charset                        sourceCharset;
 
     private StandardJavaFileManager        standardFileManager;
 
@@ -224,7 +226,7 @@ public class BaseCompiler {
             }
 
             // Run the compiler
-            getSystemJavaCompiler()
+            CompilationTask task = getSystemJavaCompiler()
             .getTask(
                 null, // out
                 fileManager, // fileManager
@@ -232,7 +234,9 @@ public class BaseCompiler {
                 getOptions(), // options
                 null, // classes
                 sourceFileObjects // compilationUnits
-            ).call();
+            );
+            task.setLocale(Locale.ENGLISH);
+            task.call();
         } catch (RuntimeException _ex) {
 
             // Unwrap the compilation exception and throw it
@@ -345,7 +349,7 @@ public class BaseCompiler {
     private JavaFileManager createJavaFileManager() {
 
         // Get the original FM, which reads class files through this JVM's BOOTCLASSPATH and CLASSPATH.
-        JavaFileManager jfm = getSystemJavaCompiler().getStandardFileManager(null, null, null);
+        JavaFileManager jfm = getSystemJavaCompiler().getStandardFileManager(new CompilerListener(unresolvableSymbols, compileErrors, compilerLogs, missingSymbols), Locale.ENGLISH, null);
         standardFileManager = (StandardJavaFileManager) jfm;
 
         // Store .class file via the classFileFactory
