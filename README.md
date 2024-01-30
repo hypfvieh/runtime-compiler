@@ -1,4 +1,4 @@
-# RuTiCo (_Ru_n_ti_me-_Co_mpiler)
+# RuTiCo (Ru-n-ti-me Co-mpiler)
 
 This project provides a helper library and a maven plugin to compile and run Java source code at runtime.
 
