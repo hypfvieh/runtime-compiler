@@ -76,5 +76,6 @@ Example:
                     </sourceLocations>
                 </configuration>
             </execution>
+        </executions>
     </plugin>
 ```
