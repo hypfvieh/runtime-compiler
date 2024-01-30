@@ -9,7 +9,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>runtime-compiler</artifactId>
+    <artifactId>runtime-compiler-lib</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
 

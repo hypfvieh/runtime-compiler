@@ -7,11 +7,13 @@
     <artifactId>runtime-compiler-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
+    <name>runtime-compiler</name>
     <inceptionYear>2024</inceptionYear>
 
+    <url>https://github.com/hypfvieh/runtime-compiler</url>
+
     <modules>
-        <module>runtime-compiler</module>
+        <module>runtime-compiler-lib</module>
         <module>java-runtime-compiler-maven-plugin</module>
     </modules>
 
@@ -21,6 +23,8 @@
         <dep.mockito.version>5.10.0</dep.mockito.version>
 
         <plugin.checkstyle.version>10.12.7</plugin.checkstyle.version>
+        <plugin.pmd.version>6.55.0</plugin.pmd.version>
+
 
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
@@ -113,7 +117,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-plugin-plugin</artifactId>
-                    <version>3.10.1</version>
+                    <version>3.11.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-report-plugin</artifactId>
+                    <version>3.11.0</version>
                 </plugin>
 
                 <plugin>
@@ -125,7 +135,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>3.6.3</version>
                     <configuration>
                         <skip>${check.skip-javadoc}</skip>
                         <doclint>none</doclint>
@@ -254,22 +264,22 @@
                         <dependency>
                             <groupId>net.sourceforge.pmd</groupId>
                             <artifactId>pmd-core</artifactId>
-                            <version>${pmd.version}</version>
+                            <version>${plugin.pmd.version}</version>
                         </dependency>
                         <dependency>
                             <groupId>net.sourceforge.pmd</groupId>
                             <artifactId>pmd-java</artifactId>
-                            <version>${pmd.version}</version>
+                            <version>${plugin.pmd.version}</version>
                         </dependency>
                         <dependency>
                             <groupId>net.sourceforge.pmd</groupId>
                             <artifactId>pmd-javascript</artifactId>
-                            <version>${pmd.version}</version>
+                            <version>${plugin.pmd.version}</version>
                         </dependency>
                         <dependency>
                             <groupId>net.sourceforge.pmd</groupId>
                             <artifactId>pmd-jsp</artifactId>
-                            <version>${pmd.version}</version>
+                            <version>${plugin.pmd.version}</version>
                         </dependency>
                     </dependencies>
                     <configuration>
@@ -371,6 +381,15 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-report-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>${project.site}</outputDirectory>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
@@ -389,7 +408,7 @@
         </repository>
         <site>
           <id>local</id>
-          <url>file://${java.io.tmpdir}/${project.name}-site-prepared</url>
+          <url>file://${java.io.tmpdir}/rutico-site-prepared</url>
         </site>
     </distributionManagement>
 

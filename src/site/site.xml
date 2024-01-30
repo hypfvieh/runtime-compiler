@@ -1,0 +1,37 @@
+<project	xmlns="http://maven.apache.org/DECORATION/1.4.0"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://maven.apache.org/DECORATION/1.4.0 https://maven.apache.org/xsd/decoration-1.4.0.xsd"
+			name="RuTiCo">
+
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.12.0</version>
+  </skin>
+
+  <bannerLeft>
+    <name>RuTiCo</name>
+  </bannerLeft>
+  
+    <custom>
+    <fluidoSkin>
+    </fluidoSkin>
+  </custom>
+
+<version position="right"/>
+
+<body>
+    <links>
+      <item name="GitHub Repository" href="https://www.github.com/hypfvieh/rutico" />
+      <item name="Maven Central" href="https://search.maven.org/search?q=g:com.github.hypfvieh.java%20a:runtime-compiler" />
+    </links>
+    
+    <menu name="Overview">
+        <item name="Home" href="/index.html" />
+    </menu>
+    <menu ref="modules"/>
+    <menu ref="reports"/>
+</body>
+
+</project>
+

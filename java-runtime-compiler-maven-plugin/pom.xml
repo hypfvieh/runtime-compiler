@@ -63,7 +63,7 @@
 
         <dependency>
             <groupId>com.github.hypfvieh.java</groupId>
-            <artifactId>runtime-compiler</artifactId>
+            <artifactId>runtime-compiler-lib</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -152,4 +152,5 @@
         </plugins>
 
     </build>
+
 </project>
