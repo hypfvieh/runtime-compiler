@@ -1,6 +1,5 @@
 package com.github.hypfvieh.java.rtcompiler;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -10,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-class CompileUtilTest extends Assertions {
+class CompileUtilTest extends AbstractBaseTest {
 
     @Test
     void testGetClassNameFromSourceComplex() throws IOException {

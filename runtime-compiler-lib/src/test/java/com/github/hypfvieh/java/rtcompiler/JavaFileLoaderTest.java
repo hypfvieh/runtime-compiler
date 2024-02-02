@@ -1,15 +1,12 @@
 package com.github.hypfvieh.java.rtcompiler;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
-class JavaFileLoaderTest extends Assertions {
-
-    static final String SAMPLES = "src/test/java/com/github/hypfvieh/java/rtcompiler/samples/";
+class JavaFileLoaderTest extends AbstractBaseTest {
 
     @BeforeAll
     static void setCompileOutputDirectory() {

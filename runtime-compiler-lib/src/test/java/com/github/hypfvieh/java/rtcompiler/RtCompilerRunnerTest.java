@@ -1,77 +1,73 @@
 package com.github.hypfvieh.java.rtcompiler;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import com.github.hypfvieh.java.rtcompiler.RtCompilerRunner.ReturnCode;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
-class RtCompilerRunnerTest extends Assertions {
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
-    static final String SAMPLES = "src/test/java/com/github/hypfvieh/java/rtcompiler/samples/";
+class RtCompilerRunnerTest extends AbstractBaseTest {
 
-    @Test
-    void testNullArgs() {
-        assertEquals(ReturnCode.ERR_NO_ARGS, run((String[]) null));
+    static List<Entry<ReturnCode, Supplier<ReturnCode>>> getData() {
+        List<Entry<ReturnCode, Supplier<ReturnCode>>> results = new ArrayList<>();
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.ERR_NO_ARGS, () -> run((String[]) null)));
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.ERR_NO_ARGS, () -> run()));
+
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.ERR_NO_FILE, () -> run("")));
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.ERR_NO_FILE, () -> run("ABC.java")));
+
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.ERR_NO_MAIN, () -> new RtCompilerRunner().run(SAMPLES + "SampleSourceEmpty.java")));
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.ERR_NO_MAIN, () -> run(SAMPLES + "SampleSourceNonPublicStaticMain.java")));
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.ERR_NO_MAIN, () -> run(SAMPLES + "SampleSourceStaticMainThrows.java")));
+
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.ERR_COMPILE, () -> run(SAMPLES + "SampleSourceCompileError.txt")));
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.ERR_RUNTIME, () -> run(SAMPLES + "SampleSourceExceptionAtRunTime.java")));
+
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.SUCCESS, () -> run(SAMPLES + "SampleSourceSuccess.java")));
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.SUCCESS, () -> run(SAMPLES + "SampleSourceSuccessNonPublicClass.java")));
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.SUCCESS, () -> run(SAMPLES + "SampleSourceInheritChild.java")));
+        results.add(new AbstractMap.SimpleEntry<>(ReturnCode.SUCCESS, () -> new RtCompilerRunner().run(SAMPLES + "SampleSourceAbstract.java")));
+
+        return results;
+    }
+
+    @ParameterizedTest
+    @MethodSource("getData")
+    void testReturns(Entry<ReturnCode, Supplier<ReturnCode>> _entry) {
+        assertEquals(_entry.getKey(), _entry.getValue().get());
     }
 
     @Test
-    void testEmptyArgs() {
-        assertEquals(ReturnCode.ERR_NO_ARGS, run());
-    }
+    void testMain() {
+        try (MockedStatic<RtCompilerRunner> runner = Mockito.mockStatic(RtCompilerRunner.class)) {
+            AtomicBoolean called = new AtomicBoolean();
+            runner.when(() -> RtCompilerRunner.exit(any()))
+            .then(new Answer<>() {
+                @Override
+                public Object answer(InvocationOnMock _invocation) throws Throwable {
+                    called.set(true);
+                    return null;
+                }
+            });
 
-    @Test()
-    public void testNoSourceFile() {
-        assertEquals(ReturnCode.ERR_NO_FILE, run(""));
-    }
-
-    @Test()
-    public void testMissingSourceFile() {
-        assertEquals(ReturnCode.ERR_NO_FILE, run("ABC.java"));
-    }
-
-    @Test()
-    public void testNoStaticMain() {
-        assertEquals(ReturnCode.ERR_NO_MAIN, new RtCompilerRunner().run(SAMPLES + "SampleSourceEmpty.java"));
-    }
-
-    @Test()
-    public void testNonPublicStaticMain() {
-        assertEquals(ReturnCode.ERR_NO_MAIN, run(SAMPLES + "SampleSourceNonPublicStaticMain.java"));
-    }
-
-    @Test()
-    public void testStaticMainThrows() {
-        assertEquals(ReturnCode.ERR_NO_MAIN, run(SAMPLES + "SampleSourceStaticMainThrows.java"));
-    }
-
-    @Test()
-    public void testCompileError() {
-        assertEquals(ReturnCode.ERR_COMPILE, run(SAMPLES + "SampleSourceCompileError.txt"));
-    }
-
-    @Test()
-    public void testRunTimeException() {
-        assertEquals(ReturnCode.ERR_RUNTIME, run(SAMPLES + "SampleSourceExceptionAtRunTime.java"));
-    }
-
-    @Test()
-    public void testRunSuccess() {
-        assertEquals(ReturnCode.SUCCESS, run(SAMPLES + "SampleSourceSuccess.java"));
-    }
-
-    @Test()
-    public void testRunSuccessNonPublicClass() {
-        assertEquals(ReturnCode.SUCCESS, run(SAMPLES + "SampleSourceSuccessNonPublicClass.java"));
-    }
-
-    @Test
-    void testRunSuccessInheritance() throws Exception {
-        assertEquals(ReturnCode.SUCCESS, run(SAMPLES + "SampleSourceInheritChild.java"));
-    }
-
-    @Test()
-    public void testRunSuccessAbstractClass() {
-        assertEquals(ReturnCode.SUCCESS, new RtCompilerRunner().run(SAMPLES + "SampleSourceAbstract.java"));
+            runner.when(() -> RtCompilerRunner.main(any())).thenCallRealMethod();
+            RtCompilerRunner.main(new String[] {SAMPLES + "SampleSourceSuccess.java"});
+            runner.verify(() -> RtCompilerRunner.exit(any()));
+            assertTrue(called.get());
+        }
     }
 
     static ReturnCode run(String... _args) {

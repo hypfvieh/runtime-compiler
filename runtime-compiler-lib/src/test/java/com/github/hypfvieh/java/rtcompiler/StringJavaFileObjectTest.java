@@ -1,12 +1,11 @@
 package com.github.hypfvieh.java.rtcompiler;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 
-class StringJavaFileObjectTest extends Assertions {
+class StringJavaFileObjectTest extends AbstractBaseTest {
 
     @Test
     void testConstructorFileNull() {
@@ -28,4 +27,12 @@ class StringJavaFileObjectTest extends Assertions {
         assertTrue(toStr.contains("lastMod="));
     }
 
+    @Test
+    void testCharContent() throws IOException {
+        File tmp = createTestFile(getShortTestMethodName() + ".txt", "Content");
+
+        StringJavaFileObject sjfo = new StringJavaFileObject(tmp.getPath());
+        CharSequence charContent = sjfo.getCharContent(false);
+        assertEquals("Content", charContent);
+    }
 }

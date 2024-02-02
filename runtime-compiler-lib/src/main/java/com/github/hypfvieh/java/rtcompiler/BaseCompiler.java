@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -48,8 +49,6 @@ public class BaseCompiler {
 
     private final Map<String, PrintStream> compilerLogs;
 
-    private final Set<File>                unresolvableSymbols;
-
     private final Map<Type, Set<String>>   missingSymbols;
 
     private File[]                         classPath       =
@@ -70,7 +69,6 @@ public class BaseCompiler {
         compileErrors = new ArrayList<>();
         compilerLogs = new HashMap<>();
         missingSymbols = new HashMap<>();
-        unresolvableSymbols = new LinkedHashSet<>();
         sourceCharset = Charset.defaultCharset();
         sourceLocator = new FileResourceLocator(".");
         classFileLocator = new FileResourceLocator(".");
@@ -146,14 +144,6 @@ public class BaseCompiler {
     }
 
     /**
-     * Contains all unresolvable symbols reported by the compiler during last call to {@link #compile(AbstractResource[])}.
-     * @return Set, maybe empty - never null
-     */
-    public Set<File> getUnresolvableSymbols() {
-        return unresolvableSymbols;
-    }
-
-    /**
      * Contains all missing symbols reported by the compiler during last call to {@link #compile(AbstractResource[])}.
      * @return Map, maybe empty - never null
      */
@@ -170,13 +160,28 @@ public class BaseCompiler {
      *
      * @param _compilerOpts command line options supported javac
      */
-    public void setCompilerOptions(String[] _compilerOpts) {
+    public void setCompilerOptions(String... _compilerOpts) {
         compilerOptions = Arrays
             .stream(_compilerOpts)
-            .filter(opt -> opt.equals("-g") || opt.startsWith("-g:"))
+            .filter(opt -> !opt.equals("-g") && !opt.startsWith("-g:"))
             .collect(Collectors.toList());
     }
 
+    /**
+     * Currently configured compiler options.
+     *
+     * @return Collection, maybe empty - never null
+     */
+    public Collection<String> getCompilerOptions() {
+        return Collections.unmodifiableCollection(compilerOptions);
+    }
+
+    /**
+     * The configured compiler options.<br>
+     * This will include the debug parameters set by {@link #setDebugLines(boolean)}, {@link #setDebugSource(boolean)} and {@link #setDebugVars(boolean)}.
+     *
+     * @return List with options, never null
+     */
     private List<String> getOptions() {
         String optionStr = Map.of(
             "lines", debugLines,
@@ -196,12 +201,19 @@ public class BaseCompiler {
         return options;
     }
 
-    public void compile(AbstractResource[] _sourceResources) throws CompileException, IOException {
+    /**
+     * Compile all sources defined by the given {@link AbstractResource}s.
+     *
+     * @param _sourceResources sources to compile
+     *
+     * @throws CompileException when compilation fails
+     * @throws IOException when reading or writing fails
+     */
+    public void compile(AbstractResource... _sourceResources) throws CompileException, IOException {
 
         compileErrors.clear();
         compilerLogs.clear();
         missingSymbols.clear();
-        unresolvableSymbols.clear();
 
         List<String> sourceFileNames = Arrays.stream(_sourceResources)
             .map(AbstractResource::getResourceName)
@@ -219,8 +231,10 @@ public class BaseCompiler {
                 sourceCharset));
         }
 
+        Set<File> unresolvableSymbols = new LinkedHashSet<>();
+
         // take care of closing fileManager after compiling!
-        try (JavaFileManager fileManager = getJavaFileManager()) {
+        try (JavaFileManager fileManager = getJavaFileManager(unresolvableSymbols)) {
             if (classPath != null && classPath.length > 0) {
                 standardFileManager.setLocation(StandardLocation.CLASS_PATH, Arrays.asList(classPath));
             }
@@ -254,7 +268,7 @@ public class BaseCompiler {
 
         // if we have unresolved errors during compilation, try to compile the found additional sources
         if (!unresolvableSymbols.isEmpty()) {
-            compile(unresolvableSymbols.toArray(File[]::new));
+            compile(unresolvableSymbols.stream().map(File::toPath).toArray(Path[]::new));
         }
 
         if (!missingSymbols.isEmpty()) {
@@ -271,8 +285,8 @@ public class BaseCompiler {
             }
 
             if (!missingSources.isEmpty()) {
-                compile(Stream.concat(missingSources.stream(), sourceFileNames.stream().map(File::new))
-                    .toArray(File[]::new));
+                compile(Stream.concat(missingSources.stream().map(File::toPath), sourceFileNames.stream().map(Path::of))
+                    .toArray(Path[]::new));
                 return;
             }
 
@@ -291,14 +305,20 @@ public class BaseCompiler {
         }
     }
 
-    public final boolean compile(File[] _sourceFiles) throws CompileException, IOException {
+    /**
+     * Compile all given source files.
+     *
+     * @param _sourceFiles files to compile
+     *
+     * @throws CompileException when compilation fails
+     * @throws IOException when input cannot be read or output not writable
+     */
+    public final void compile(Path... _sourceFiles) throws CompileException, IOException {
         PathResource[] sourceFileResources = Arrays.stream(_sourceFiles)
-            .map(e -> new PathResource(e.toPath()))
+            .map(PathResource::new)
             .toArray(PathResource[]::new);
 
-        this.compile(sourceFileResources);
-
-        return true;
+        compile(sourceFileResources);
     }
 
     /**
@@ -338,18 +358,19 @@ public class BaseCompiler {
     /**
      * Creates the underlying {@link JavaFileManager} lazily, because {@link #setSourcePath(File[])} and consorts are
      * called <em>after</em> initialization.
+     * @param _unresolvableSymbols Set to store classes which were not found due to other package
      */
-    private JavaFileManager getJavaFileManager() {
+    private JavaFileManager getJavaFileManager(Set<File> _unresolvableSymbols) {
         if (fileManagerEnn == null) {
-            fileManagerEnn = createJavaFileManager();
+            fileManagerEnn = createJavaFileManager(_unresolvableSymbols);
         }
         return fileManagerEnn;
     }
 
-    private JavaFileManager createJavaFileManager() {
+    private JavaFileManager createJavaFileManager(Set<File> _unresolvableSymbols) {
 
         // Get the original FM, which reads class files through this JVM's BOOTCLASSPATH and CLASSPATH.
-        JavaFileManager jfm = getSystemJavaCompiler().getStandardFileManager(new CompilerListener(unresolvableSymbols, compileErrors, compilerLogs, missingSymbols), Locale.ENGLISH, null);
+        JavaFileManager jfm = getSystemJavaCompiler().getStandardFileManager(new CompilerListener(_unresolvableSymbols, compileErrors, compilerLogs, missingSymbols), Locale.ENGLISH, null);
         standardFileManager = (StandardJavaFileManager) jfm;
 
         // Store .class file via the classFileFactory

@@ -31,7 +31,7 @@ public final class JavaFileLoader {
             throw new FileNotFoundException("Source file not readable: " + sourceFile);
         }
 
-        RtCompilerUtil compiler = new RtCompilerUtil();
+        RtCompiler compiler = new RtCompiler();
         compiler.compile(new File(System.getProperty(SYSPROP_COMPILER_TARGET, "target/")), sourceFile);
 
         String className = CompileUtil.getClassNameFromSourceFile(sourceFile);

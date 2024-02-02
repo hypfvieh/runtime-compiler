@@ -117,7 +117,14 @@ public class CompilerListener implements DiagnosticListener<JavaFileObject> {
      * @param _location location of error in source code
      */
     private void handleErrDoesNotExist(Diagnostic<? extends JavaFileObject> _diagnostic, DiagnosticLocation _location) {
-        String pkgName = _diagnostic.getMessage(Locale.US).replaceFirst("package ([^\\s]+) does not exist", "$1"); // the missing package name
+        String pkgName = extractMissing(_diagnostic); // the missing package name
+
+        if (pkgName != null) {
+            pkgName = pkgName.substring(0, pkgName.lastIndexOf('.'));
+        } else {
+            pkgName = _diagnostic.getMessage(Locale.US).replaceFirst("package ([^\\s]+) does not exist", "$1");
+        }
+
         String fn = _diagnostic.getSource().getName();
 
         if (_diagnostic.getSource() instanceof ResourceBasedJavaFileObject) {

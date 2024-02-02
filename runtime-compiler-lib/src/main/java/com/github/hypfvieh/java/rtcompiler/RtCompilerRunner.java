@@ -121,7 +121,11 @@ public final class RtCompilerRunner {
             runner.logger.error("{} ended with error return code={} ({})", progName, rc.getCode(), rc);
             runner.logger.info("Usage: {} java_source_file [ argument ... ]", progName);
         }
-        System.exit(rc.getCode());
+        exit(rc);
+    }
+
+    static void exit(ReturnCode _rc) {
+        System.exit(_rc.getCode());
     }
 
     /**

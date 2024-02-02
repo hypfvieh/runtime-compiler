@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Helper class to compile java sources. <br>
@@ -24,7 +23,7 @@ import java.util.stream.Stream;
  * @author hypfvieh
  * @since 1.0.0 - 2024-01-25
  */
-public class RtCompilerUtil {
+public class RtCompiler extends BaseCompiler {
 
     /** Do not write class files to the file system, but keep them in memory only. */
     private boolean     compileToMemory;
@@ -40,7 +39,7 @@ public class RtCompilerUtil {
     /**
      * Creates a new compiler.
      */
-    public RtCompilerUtil() {
+    public RtCompiler() {
         compileToMemory = !findDebugEnabledFromEnv();
     }
 
@@ -98,24 +97,23 @@ public class RtCompilerUtil {
             throw new IllegalStateException("Could not create output directory " + _outputClassDir);
         }
 
-        BaseCompiler compiler = new BaseCompiler();
-        compiler.setDebugLines(debugLines);
-        compiler.setDebugSource(debugSource);
-        compiler.setDebugVars(debugVars);
+        setDebugLines(debugLines);
+        setDebugSource(debugSource);
+        setDebugVars(debugVars);
 
-        compiler.setClassPath(Optional.ofNullable(classPath).orElse(parseJavaClassPath(System.getProperty("java.class.path"))));
+        setClassPath(Optional.ofNullable(classPath).orElse(parseJavaClassPath(System.getProperty("java.class.path"))));
 
         Map<String, byte[]> classes = new HashMap<>();
 
         if (compileToMemory) {
             // store generated .class files in a map:
-            compiler.setClassFileCreator(new ByteArrMapResourceWriter(classes));
+            setClassFileCreator(new ByteArrMapResourceWriter(classes));
         } else {
-            compiler.setClassFileCreator(new FileResourceWriter(_outputClassDir));
+            setClassFileCreator(new FileResourceWriter(_outputClassDir));
         }
 
         // compile all source files
-        compiler.compile(Arrays.stream(_sourceFiles)
+        compile(Arrays.stream(_sourceFiles)
             .map(f -> f.toPath())
             .map(PathResource::new).toArray(PathResource[]::new));
 
@@ -137,22 +135,6 @@ public class RtCompilerUtil {
             .collect(Collectors.toCollection(LinkedHashSet::new));
 
         return classNames;
-    }
-
-    Set<File> findMissingSources(File _sourceDir, Set<String> _missingSymbols) {
-        try (Stream<String> stream = Stream.of(_sourceDir.list())) {
-            Set<File> allSources = stream
-                .map(s -> new File(_sourceDir, s))
-                .filter(CompileUtil::isJavaFile)
-                .collect(Collectors.toSet());
-            Set<File> missingSources = new LinkedHashSet<>();
-            for (String symbol : _missingSymbols) {
-                allSources.stream()
-                    .filter(f -> f.getName().equals(symbol + ".java"))
-                    .forEach(missingSources::add);
-            }
-            return missingSources;
-        }
     }
 
     /**

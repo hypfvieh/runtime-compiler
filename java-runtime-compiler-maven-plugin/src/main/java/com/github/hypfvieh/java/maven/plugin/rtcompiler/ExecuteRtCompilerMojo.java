@@ -1,6 +1,6 @@
 package com.github.hypfvieh.java.maven.plugin.rtcompiler;
 
-import com.github.hypfvieh.java.rtcompiler.RtCompilerUtil;
+import com.github.hypfvieh.java.rtcompiler.RtCompiler;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -403,7 +403,7 @@ public class ExecuteRtCompilerMojo extends AbstractMojo {
      * @throws MojoFailureException on compilation failure
      */
     Set<String> compileSourceFiles(Collection<File> _sourceFiles, List<File> _classPathFiles) throws MojoFailureException {
-        RtCompilerUtil rtCompiler = new RtCompilerUtil();
+        RtCompiler rtCompiler = new RtCompiler();
         rtCompiler.setDebuggingInformation(true, true, true);
         rtCompiler.setCompileToMemory(false);
 
