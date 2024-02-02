@@ -8,10 +8,9 @@ import com.github.hypfvieh.java.rtcompiler.resources.locator.PathResource;
 import com.github.hypfvieh.java.rtcompiler.resources.writer.ByteArrMapResourceWriter;
 import com.github.hypfvieh.java.rtcompiler.resources.writer.FileResourceWriter;
 
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
+import java.lang.System.Logger.Level;
 import java.lang.management.ManagementFactory;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -127,7 +126,7 @@ public class RtCompiler extends BaseCompiler {
                 try {
                     return CompileUtil.getClassNameFromSourceFile(s);
                 } catch (IOException _ex) {
-                    LoggerFactory.getLogger(getClass().getName()).warn("Could not extract class name from source file {}", s);
+                    System.getLogger(getClass().getName()).log(Level.WARNING, "Could not extract class name from source file {0}", s);
                     return null;
                 }
             })

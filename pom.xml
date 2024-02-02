@@ -56,13 +56,33 @@
                 <version>${dep.mockito.version}</version>                
             </dependency>
 
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${dep.slf4j.version}</version>
-            </dependency>
+			<dependency>
+	            <groupId>org.slf4j</groupId>
+	            <artifactId>slf4j-jdk-platform-logging</artifactId>
+	            <version>${dep.slf4j.version}</version>
+	        </dependency>
+	
+	        <dependency>
+	            <groupId>org.slf4j</groupId>
+	            <artifactId>slf4j-simple</artifactId>
+	            <version>${dep.slf4j.version}</version>
+	        </dependency>
         </dependencies>
     </dependencyManagement>
+
+	<dependencies>
+		<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk-platform-logging</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+	</dependencies>
 
     <build>
         <plugins>

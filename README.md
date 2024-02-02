@@ -2,47 +2,16 @@
 
 This project provides a helper library and a maven plugin to compile and run Java source code at runtime.
 
-## Library Usage
+## Usage as Library or Launcher
 
-To get this library to work, you have to execute your program using a JDK.
-No other dependency besides slf4j is needed.
+[See here](https://hypfvieh.github.io/runtime-compiler/runtime-compiler-lib/usage.html)
 
-Add the library to your project:
-```
-    <dependency>
-        <groupId>com.github.hypfvieh.java</groupId>
-        <artifactId>runtime-compiler-lib</artifactId>
-        <version>${project.version}</version>
-    </dependency>
-```
+## Additional Information
+The library does not have any dependencies besides running on a JDK (***not a JRE***).
 
-Now you can use the library like this:
-```java
-    private SomeClassInstance createClassInstance() {
-        File myFile = new File("path/to/file/MyClass.java");
-        Class<?> fileCreator = JavaFileLoader.createClassFromFile(myFile.getAbsolutePath());
-        Object javaObjFromFile = fileCreator.getDeclaredConstructor().newInstance();
-
-        if (!(javaObjFromFile instanceof SomeClassInstance)) {
-            throw new ClassCastException(String.format("Source %s is not a subclass of %s", myFile, SomeClassInstance.class.getName()));
-        }
-
-        return (SomeClassInstance) javaObjFromFile;
-    }
-```
-
-This will look for a file 'MyClass.java' in 'path/to/file/' and will compile it.
-After that it will try to call the default no-args constructor and casts it.
-The class `SomeClassInstance` is extended by the source in 'MyClass.java' so it is possible to
-return a more concrete class type instead of `Object`.
-
-The library will take care about compiling and also tries to find all classes imported directly or through inheritance by the
-compiled source.
-
-It is possible to use inheritance of sources which also have to be compiled.
-E.g. when `ClassB` extends `ClassA`, RuTiCo will try to compile `ClassB` which fails.
-Due to the errors created by the compiler RuTiCo will try to find `ClassA` using the compiler error.
-After compiling `ClassA` the failed compilation of `ClassB` is retried.
+All logging is handled by Java Platform Logger (JPL).
+This means if you want nicer logging or using your favorite logging framework (e.g. slf4j or log4j)
+you have to provide the artifacts the additional required briding libraries as well (e.g. org.apache.logging.log4j:log4j-jpl / org.slf4j:slf4j-jdk-platform-logging).
 
 ## Maven plugin usage
 You can use the RuTiCo maven plugin to compile and run Java source during your maven build.

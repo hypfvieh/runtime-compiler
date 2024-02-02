@@ -1,8 +1,7 @@
 package com.github.hypfvieh.java.rtcompiler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
@@ -29,7 +28,7 @@ public final class RtCompilerRunner {
     }
 
     RtCompilerRunner(boolean _logException) {
-        logger = LoggerFactory.getLogger(getClass().getName());
+        logger = System.getLogger(getClass().getName());
         logException = _logException;
     }
 
@@ -48,16 +47,16 @@ public final class RtCompilerRunner {
             clazz = JavaFileLoader.createClassFromFile(javaFile);
         } catch (Exception _ex) {
             if (logException && _ex != null) {
-                logger.warn("Failed to compile java source file {}: ", javaFile, _ex);
+                logger.log(Level.WARNING, "Failed to compile java source file {0}: ", javaFile, _ex);
             } else {
-                logger.warn("Failed to compile java source file {}", javaFile);
+                logger.log(Level.WARNING, "Failed to compile java source file {0}", javaFile);
             }
             return ReturnCode.ERR_COMPILE;
         }
 
         Method mainMethod = findMainMethod(clazz);
         if (mainMethod == null) {
-            logger.warn("No valid main method in java source file {} (public static void main(String[]))", javaFile);
+            logger.log(Level.WARNING, "No valid main method in java source file {0} (public static void main(String[]))", javaFile);
             return ReturnCode.ERR_NO_MAIN;
         }
 
@@ -75,9 +74,9 @@ public final class RtCompilerRunner {
         }
 
         if (logException && ex != null) {
-            logger.warn("Failed to execute Java class {} with arguments {}: ", clazz.getName(), Arrays.toString(_args), ex);
+            logger.log(Level.WARNING, "Failed to execute Java class {0} with arguments {1}: ", clazz.getName(), Arrays.toString(_args), ex);
         } else {
-            logger.warn("Failed to execute Java class {} with arguments {}", clazz.getName(), Arrays.toString(_args));
+            logger.log(Level.WARNING, "Failed to execute Java class {0} with arguments {1}", clazz.getName(), Arrays.toString(_args));
         }
 
         return ex instanceof RuntimeException ? ReturnCode.ERR_RUNTIME : ReturnCode.ERR_EXCEPTN;
@@ -113,13 +112,13 @@ public final class RtCompilerRunner {
 
         String progName = runner.getClass().getName();
 
-        runner.logger.info("Starting {} with arguments {}", progName, Arrays.toString(_args));
+        runner.logger.log(Level.INFO, "Starting {0} with arguments {1}", progName, Arrays.toString(_args));
 
         ReturnCode rc = runner.run(_args);
 
         if (rc != ReturnCode.SUCCESS) {
-            runner.logger.error("{} ended with error return code={} ({})", progName, rc.getCode(), rc);
-            runner.logger.info("Usage: {} java_source_file [ argument ... ]", progName);
+            runner.logger.log(Level.ERROR, "{0} ended with error return code={1} ({2})", progName, rc.getCode(), rc);
+            runner.logger.log(Level.INFO, "Usage: {0} java_source_file [ argument ... ]", progName);
         }
         exit(rc);
     }
