@@ -1,8 +1,35 @@
 # Usage
 
+## General
+
 To get this library to work, you have to execute your program using a JDK.
 No other dependency besides slf4j is needed.
 
+## Usage as Java source code launcher
+If you want to launch arbitrary uncompiled code without writing your own subsystem, you can use the provided launcher.
+The launcher requires the executed code to have a ```public static void main(String[] args)``` method which *does not throw*.
+
+To use the launcher execute:
+
+```java -cp <path-to-runtime-compiler-lib.jar>:<path-to-slf4j-api-jar> com.github.hypfvieh.java.rtcompiler.RtCompilerRunner <File-To-Compile> <arguments passed to compiled file>```
+
+All additional arguments provided to the call will be passed to the static main of the compiled class.
+
+The Launcher will return different exit codes when something went wrong with compilation:
+
+| Code  | Meaning                                                    |
+| ----- | ---------------------------------------------------------- |
+| 0     | Everything went fine                                       |
+| 200   | No or empty arguments                                      |
+| 201   | No Java source file name given or file does not exist      |
+| 203   | Compilation error in Java source file                      |
+| 204   | No valid main method in source file                        |
+| 205   | Run-time exception encountered in execution of source file |
+| 206   | Checked exception encountered in execution of source file  |
+
+Additional information are logged using the logging framework (if any) or logged to stderr.
+
+## Usage as dependency
 Add the library to your project:
 ```
     <dependency>
