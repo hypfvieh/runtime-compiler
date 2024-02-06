@@ -8,33 +8,103 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>runtime-compiler</name>
-    <inceptionYear>2024</inceptionYear>
 
     <url>https://hypfvieh.github.io/rutico/</url>
+    <inceptionYear>2024</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/hypfvieh/${project.name}/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>hypfvieh</id>
+            <name>David M.</name>
+            <email>hypfvieh@googlemail.com</email>
+            <timezone>+1</timezone>
+            <organizationUrl>https://github.com/hypfvieh/</organizationUrl>
+        </developer>
+        <developer>
+            <id>spannm</id>
+            <name>Markus Spann</name>
+            <email>spannm@outlook.de</email>
+            <timezone>+1</timezone>
+            <organizationUrl>https://github.com/spannm/</organizationUrl>
+        </developer>
+    </developers>
 
     <modules>
         <module>runtime-compiler-lib</module>
         <module>java-runtime-compiler-maven-plugin</module>
     </modules>
 
-    <properties>
-        <dep.slf4j.version>2.0.11</dep.slf4j.version>
-        <dep.junit.version>5.10.1</dep.junit.version>
-        <dep.mockito.version>5.10.0</dep.mockito.version>
+    <scm>
+        <connection>scm:git:https://github.com/hypfvieh/${project.name}.git</connection>
+        <developerConnection>scm:git:https://github.com/hypfvieh/${project.name}.git</developerConnection>
+        <url>https://github.com/hypfvieh/${project.name}.git</url>
+    </scm>
 
-        <plugin.checkstyle.version>10.12.7</plugin.checkstyle.version>
-        <plugin.pmd.version>6.55.0</plugin.pmd.version>
-        <plugin.jacoco.version>0.8.11</plugin.jacoco.version>
-        <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <site>
+            <id>local</id>
+            <url>file://${java.io.tmpdir}/rutico-site-prepared</url>
+        </site>
+    </distributionManagement>
+
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <maven.javadoc.skip>false</maven.javadoc.skip>
-        <check.skip-javadoc>false</check.skip-javadoc>
+        <javaVersion>11</javaVersion>
 
-        <check.skip-checkstyle>false</check.skip-checkstyle>
-        <check.skip-pmd>false</check.skip-pmd>
+        <!-- the -release argument for the Java compiler (since Java 9) -->
+        <maven.compiler.release>${javaVersion}</maven.compiler.release>
+        <!-- the -source argument for the Java compiler -->
+        <maven.compiler.source>${javaVersion}</maven.compiler.source>
+        <!-- the -target argument for the Java compiler -->
+        <maven.compiler.target>${javaVersion}</maven.compiler.target>
+
+        <dep.plugin.clean.version>3.3.2</dep.plugin.clean.version>
+        <dep.plugin.source.version>3.3.0</dep.plugin.source.version>
+        <dep.plugin.compiler.version>3.12.1</dep.plugin.compiler.version>
+        <dep.plugin.resources.version>3.3.1</dep.plugin.resources.version>
+        <dep.plugin.jar.version>3.3.0</dep.plugin.jar.version>
+        <dep.plugin.install.version>3.1.1</dep.plugin.install.version>
+        <dep.plugin.deploy.version>3.1.1</dep.plugin.deploy.version>
+        <dep.plugin.release.version>3.1.0</dep.plugin.release.version>
+        <dep.plugin.javadoc.version>3.6.3</dep.plugin.javadoc.version>
+        <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
+        <dep.plugin.jacoco.version>0.8.11</dep.plugin.jacoco.version>
+        <dep.plugin.enforcer.version>3.4.1</dep.plugin.enforcer.version>
+        <dep.plugin.gpg.version>3.1.0</dep.plugin.gpg.version>
+        <dep.plugin.checkstyle.version>3.3.1</dep.plugin.checkstyle.version>
+        <dep.plugin.pmd.version>3.21.2</dep.plugin.pmd.version>
+        <dep.plugin.site.version>3.12.1</dep.plugin.site.version>
+        <dep.plugin.project-info-reports.version>3.5.0</dep.plugin.project-info-reports.version>
+        <dep.plugin.sortpom.version>3.3.0</dep.plugin.sortpom.version>
+
+        <dep.checkstyle.version>10.13.0</dep.checkstyle.version>
+        <dep.pmd.version>6.55.0</dep.pmd.version>
+
+        <dep.slf4j.version>2.0.12</dep.slf4j.version>
+        <dep.junit.version>5.10.2</dep.junit.version>
+        <dep.mockito.version>5.10.0</dep.mockito.version>
+
+        <proj.check.skip-checkstyle>false</proj.check.skip-checkstyle>
+        <proj.check.skip-pmd>false</proj.check.skip-pmd>
+        <proj.check.skip-javadoc>false</proj.check.skip-javadoc>
 
         <parentDir>${project.basedir}</parentDir>
         <surefire_vm_args>-Xmx2048m</surefire_vm_args>
@@ -53,7 +123,7 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>${dep.mockito.version}</version>                
+                <version>${dep.mockito.version}</version>
             </dependency>
 
             <dependency>
@@ -85,6 +155,256 @@
     </dependencies>
 
     <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.16.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>3.11.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-report-plugin</artifactId>
+                    <version>3.11.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-component-metadata</artifactId>
+                    <version>2.2.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${dep.plugin.javadoc.version}</version>
+                    <configuration>
+                        <skip>${proj.check.skip-javadoc}</skip>
+                        <doclint>none</doclint>
+                        <!--  required because multi-release artifact will fuck up javadoc generation -->
+                        <failOnError>false</failOnError>
+                        <failOnWarnings>false</failOnWarnings>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${dep.plugin.enforcer.version}</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-maven</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <requireMavenVersion>
+                                        <version>3.5.0</version>
+                                    </requireMavenVersion>
+                                    <requireJavaVersion>
+                                        <version>${maven.compiler.release}</version>
+                                    </requireJavaVersion>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${dep.plugin.jar.version}</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>test-jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${dep.plugin.surefire.version}</version>
+                    <configuration>
+                        <forkCount>1</forkCount>
+                        <reuseForks>false</reuseForks>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${dep.plugin.compiler.version}</version>
+                    <executions>
+                        <execution>
+                            <id>compile</id>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                            <configuration>
+                                <release>${maven.compiler.release}</release>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${dep.plugin.release.version}</version>
+                    <configuration>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <releaseProfiles>release</releaseProfiles>
+                        <goals>deploy</goals>
+                        <pushChanges>false</pushChanges>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${dep.plugin.source.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <!-- http://maven.apache.org/plugins/maven-pmd-plugin/ -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>${dep.plugin.pmd.version}</version>
+                    <configuration>
+                        <skip>${proj.check.skip-pmd}</skip>
+                        <failOnViolation>true</failOnViolation>
+                        <printFailingErrors>true</printFailingErrors>
+                        <includeTests>true</includeTests>
+                        <failurePriority>4</failurePriority>
+                        <!-- minimum number of tokens that need to be duplicated before it causes a violation: -->
+                        <minimumTokens>100</minimumTokens>
+                        <rulesets>
+                            <ruleset>${parentDir}/src/test/resources/team/pmd-rules.xml</ruleset>
+                        </rulesets>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.sourceforge.pmd</groupId>
+                            <artifactId>pmd-core</artifactId>
+                            <version>${dep.pmd.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>net.sourceforge.pmd</groupId>
+                            <artifactId>pmd-java</artifactId>
+                            <version>${dep.pmd.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <!-- Documentation: http://maven.apache.org/plugins/maven-checkstyle-plugin/ -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${dep.plugin.checkstyle.version}</version>
+                    <configuration>
+                        <skip>${proj.check.skip-checkstyle>}</skip>
+                        <failOnViolation>true</failOnViolation>
+                        <configLocation>${parentDir}/src/test/resources/team/checkstyle-rules.xml</configLocation>
+                        <excludes>*.jpg,*.jpeg,*.gif,*.png,*.db,*.csv</excludes>
+                        <consoleOutput>true</consoleOutput>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <violationSeverity>warning</violationSeverity>
+                        <!-- Required to exclude generated sources from checkstyle checking -->
+                        <sourceDirectories>
+                            <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                        </sourceDirectories>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                        <version>${dep.checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.github.ekryd.sortpom</groupId>
+                    <artifactId>sortpom-maven-plugin</artifactId>
+                    <version>${dep.plugin.sortpom.version}</version>
+                    <configuration>
+                        <createBackupFile>false</createBackupFile>
+                        <expandEmptyElements>false</expandEmptyElements>
+                        <lineSeparator>\n</lineSeparator>
+                        <nrOfIndentSpace>4</nrOfIndentSpace>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${dep.plugin.deploy.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${dep.plugin.site.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${dep.plugin.project-info-reports.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${dep.plugin.clean.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${dep.plugin.resources.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${dep.plugin.install.version}</version>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -128,258 +448,12 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <phase>test-compile</phase> <!-- fail before we do testing -->
+                        <phase>test-compile</phase>
+                        <!-- fail before we do testing -->
                     </execution>
                 </executions>
             </plugin>
         </plugins>
-
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.15.0</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-plugin-plugin</artifactId>
-                    <version>3.11.0</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-plugin-report-plugin</artifactId>
-                    <version>3.11.0</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.codehaus.plexus</groupId>
-                    <artifactId>plexus-component-metadata</artifactId>
-                    <version>2.1.1</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.6.3</version>
-                    <configuration>
-                        <skip>${check.skip-javadoc}</skip>
-                        <doclint>none</doclint>
-                        <!--  required because multi-release artifact will fuck up javadoc generation -->
-                        <failOnError>false</failOnError>
-                        <failOnWarnings>false</failOnWarnings>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>attach-javadocs</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.3.0</version>
-                    <executions>
-                        <execution>
-                            <id>enforce-maven</id>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                            <configuration>
-                                <rules>
-                                    <requireMavenVersion>
-                                        <version>3.5.0</version>
-                                    </requireMavenVersion>
-                                    <requireJavaVersion>
-                                        <version>${maven.compiler.release}</version>
-                                    </requireJavaVersion>
-                                </rules>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.3.0</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>test-jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <archive>
-                            <manifest>
-                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            </manifest>
-                        </archive>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0</version>
-                    <configuration>
-                        <forkCount>1</forkCount>
-                        <reuseForks>false</reuseForks>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.11.0</version>
-                    <executions>
-                        <execution>
-                            <id>compile</id>
-                            <goals>
-                                <goal>compile</goal>
-                            </goals>
-                            <configuration>
-                                <release>${maven.compiler.release}</release>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>3.0.0</version>
-                    <configuration>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <releaseProfiles>release</releaseProfiles>
-                        <goals>deploy</goals>
-                        <pushChanges>false</pushChanges>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.2.1</version>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar-no-fork</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <plugin>
-                    <!-- http://maven.apache.org/plugins/maven-pmd-plugin/ -->
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.21.2</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>net.sourceforge.pmd</groupId>
-                            <artifactId>pmd-core</artifactId>
-                            <version>${plugin.pmd.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>net.sourceforge.pmd</groupId>
-                            <artifactId>pmd-java</artifactId>
-                            <version>${plugin.pmd.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>net.sourceforge.pmd</groupId>
-                            <artifactId>pmd-javascript</artifactId>
-                            <version>${plugin.pmd.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>net.sourceforge.pmd</groupId>
-                            <artifactId>pmd-jsp</artifactId>
-                            <version>${plugin.pmd.version}</version>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        <skip>${check.skip-pmd}</skip>
-                        <failOnViolation>true</failOnViolation>
-                        <printFailingErrors>true</printFailingErrors>
-                        <includeTests>true</includeTests>
-                        <failurePriority>4</failurePriority>
-                        <!-- minimum number of tokens that need to be duplicated before it causes a violation: -->
-                        <minimumTokens>100</minimumTokens>
-                        <rulesets>
-                            <ruleset>${parentDir}/src/test/resources/team/pmd-rules.xml</ruleset>
-                        </rulesets>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <!-- Documentation: http://maven.apache.org/plugins/maven-checkstyle-plugin/ -->
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.2.1</version>
-                    <configuration>
-                        <skip>${check.skip-checkstyle}</skip>
-                        <failOnViolation>true</failOnViolation>
-                        <configLocation>${parentDir}/src/test/resources/team/checkstyle-rules.xml</configLocation>
-                        <excludes>*.jpg,*.jpeg,*.gif,*.png,*.db,*.csv</excludes>
-                        <consoleOutput>true</consoleOutput>
-                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        <logViolationsToConsole>true</logViolationsToConsole>
-                        <violationSeverity>warning</violationSeverity>
-                        <!-- Required to exclude generated sources from checkstyle checking -->
-                        <sourceDirectories>
-                            <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
-                        </sourceDirectories>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.puppycrawl.tools</groupId>
-                            <artifactId>checkstyle</artifactId>
-                            <version>${plugin.checkstyle.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.1</version>
-                </plugin>
-
-                <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-site-plugin</artifactId>
-                     <version>3.12.0</version>
-                </plugin>
-                <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-project-info-reports-plugin</artifactId>
-                     <version>3.4.2</version>
-                </plugin>
-                <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-clean-plugin</artifactId>
-                     <version>3.2.0</version>
-                </plugin>
-                <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-resources-plugin</artifactId>
-                     <version>3.3.0</version>
-                </plugin>
-                <plugin>
-                     <groupId>org.apache.maven.plugins</groupId>
-                     <artifactId>maven-install-plugin</artifactId>
-                     <version>3.1.0</version>
-                </plugin>
-            </plugins>
-
-        </pluginManagement>
 
     </build>
 
@@ -416,81 +490,38 @@
         </plugins>
     </reporting>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-        <site>
-          <id>local</id>
-          <url>file://${java.io.tmpdir}/rutico-site-prepared</url>
-        </site>
-    </distributionManagement>
-
-    <scm>
-        <connection>scm:git:https://github.com/hypfvieh/${project.name}.git</connection>
-        <developerConnection>scm:git:https://github.com/hypfvieh/${project.name}.git</developerConnection>
-        <url>https://github.com/hypfvieh/${project.name}.git</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <licenses>
-        <license>
-           <name>MIT License</name>
-           <url>https://github.com/hypfvieh/${project.name}/blob/master/LICENSE</url>
-       </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>hypfvieh</id>
-            <name>David M.</name>
-            <email>hypfvieh@googlemail.com</email>
-            <organizationUrl>https://github.com/hypfvieh/</organizationUrl>
-        </developer>
-        <developer>
-            <id>spannm</id>
-            <name>Markus Spann</name>
-            <email>spannm@outlook.de</email>
-            <organizationUrl>https://github.com/spannm/</organizationUrl>
-        </developer>
-    </developers>
-
     <profiles>
         <profile>
             <id>release</id>
-            <properties>
-                <gpg.executable>gpg2</gpg.executable>
-            </properties>
             <activation>
                 <property>
                     <name>performRelease</name>
                     <value>true</value>
                 </property>
             </activation>
+            <properties>
+                <gpg.executable>gpg2</gpg.executable>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>${dep.plugin.gpg.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
-                                <phase>verify</phase>
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <phase>verify</phase>
                             </execution>
                         </executions>
                     </plugin>
                 </plugins>
             </build>
         </profile>
+
         <profile>
             <id>jacoco</id>
             <!-- Profile to create test coverage with jacoco -->
@@ -504,7 +535,7 @@
                         <plugin>
                             <groupId>org.jacoco</groupId>
                             <artifactId>jacoco-maven-plugin</artifactId>
-                            <version>${plugin.jacoco.version}</version>
+                            <version>${dep.plugin.jacoco.version}</version>
                             <executions>
                                 <execution>
                                     <id>jacoco-pre-unit-test</id>
