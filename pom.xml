@@ -24,7 +24,7 @@
 
         <plugin.checkstyle.version>10.12.7</plugin.checkstyle.version>
         <plugin.pmd.version>6.55.0</plugin.pmd.version>
-		<plugin.jacoco.version>0.8.11</plugin.jacoco.version>
+        <plugin.jacoco.version>0.8.11</plugin.jacoco.version>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -56,22 +56,22 @@
                 <version>${dep.mockito.version}</version>                
             </dependency>
 
-			<dependency>
-	            <groupId>org.slf4j</groupId>
-	            <artifactId>slf4j-jdk-platform-logging</artifactId>
-	            <version>${dep.slf4j.version}</version>
-	        </dependency>
-	
-	        <dependency>
-	            <groupId>org.slf4j</groupId>
-	            <artifactId>slf4j-simple</artifactId>
-	            <version>${dep.slf4j.version}</version>
-	        </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jdk-platform-logging</artifactId>
+                <version>${dep.slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${dep.slf4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
-	<dependencies>
-		<dependency>
+    <dependencies>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk-platform-logging</artifactId>
             <scope>test</scope>
@@ -82,7 +82,7 @@
             <artifactId>slf4j-simple</artifactId>
             <scope>test</scope>
         </dependency>
-	</dependencies>
+    </dependencies>
 
     <build>
         <plugins>
@@ -194,7 +194,7 @@
                             <configuration>
                                 <rules>
                                     <requireMavenVersion>
-										<version>3.5.0</version>
+                                        <version>3.5.0</version>
                                     </requireMavenVersion>
                                     <requireJavaVersion>
                                         <version>${maven.compiler.release}</version>
@@ -281,7 +281,7 @@
                     <!-- http://maven.apache.org/plugins/maven-pmd-plugin/ -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.20.0</version>
+                    <version>3.21.2</version>
                     <dependencies>
                         <dependency>
                             <groupId>net.sourceforge.pmd</groupId>
@@ -460,7 +460,7 @@
         </developer>
     </developers>
 
-	<profiles>
+    <profiles>
         <profile>
             <id>release</id>
             <properties>
@@ -491,7 +491,7 @@
                 </plugins>
             </build>
         </profile>
-		<profile>
+        <profile>
             <id>jacoco</id>
             <!-- Profile to create test coverage with jacoco -->
             <activation>
@@ -572,6 +572,6 @@
             </reporting>
 
         </profile>
-	</profiles>
+    </profiles>
 
 </project>
