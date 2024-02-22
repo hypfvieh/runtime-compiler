@@ -92,6 +92,12 @@ public class ExecuteRtCompilerMojo extends AbstractMojo {
     private boolean             printClassPath;
 
     /**
+     * If true, skips execution of the plugin.<br>
+     */
+    @Parameter(defaultValue = "false", property = "skip", required = false)
+    private boolean             skip;
+
+    /**
      * The output directory to write Java class files to that have been compiled by this plugin.<br>
      * The directory is created if it not yet exists.<br>
      * If not configured the directory defaults to the Maven project build directory and the plugin name as subdirectory.<br>
@@ -151,6 +157,11 @@ public class ExecuteRtCompilerMojo extends AbstractMojo {
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+
+        if (skip) {
+            getLog().info("Skipping plugin execution");
+            return;
+        }
 
         // setup classpath for the compiler
         List<File> classPathFiles = new ArrayList<>();
