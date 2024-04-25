@@ -77,30 +77,32 @@
         <maven.compiler.target>${javaVersion}</maven.compiler.target>
 
         <dep.plugin.clean.version>3.3.2</dep.plugin.clean.version>
-        <dep.plugin.source.version>3.3.0</dep.plugin.source.version>
-        <dep.plugin.compiler.version>3.12.1</dep.plugin.compiler.version>
+        <dep.plugin.source.version>3.3.1</dep.plugin.source.version>
+        <dep.plugin.compiler.version>3.13.0</dep.plugin.compiler.version>
         <dep.plugin.resources.version>3.3.1</dep.plugin.resources.version>
-        <dep.plugin.jar.version>3.3.0</dep.plugin.jar.version>
+        <dep.plugin.jar.version>3.4.1</dep.plugin.jar.version>
         <dep.plugin.install.version>3.1.1</dep.plugin.install.version>
         <dep.plugin.deploy.version>3.1.1</dep.plugin.deploy.version>
         <dep.plugin.release.version>3.1.0</dep.plugin.release.version>
         <dep.plugin.javadoc.version>3.6.3</dep.plugin.javadoc.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
-        <dep.plugin.jacoco.version>0.8.11</dep.plugin.jacoco.version>
+        <dep.plugin.jacoco.version>0.8.12</dep.plugin.jacoco.version>
         <dep.plugin.enforcer.version>3.4.1</dep.plugin.enforcer.version>
-        <dep.plugin.gpg.version>3.1.0</dep.plugin.gpg.version>
+        <dep.plugin.gpg.version>3.2.4</dep.plugin.gpg.version>
+        <dep.plugin.plugin.version>3.12.0</dep.plugin.plugin.version>
+        <dep.plugin.plugin-report.version>3.12.0</dep.plugin.plugin-report.version>
         <dep.plugin.checkstyle.version>3.3.1</dep.plugin.checkstyle.version>
-        <dep.plugin.pmd.version>3.21.2</dep.plugin.pmd.version>
+        <dep.plugin.pmd.version>3.22.0</dep.plugin.pmd.version>
         <dep.plugin.site.version>3.12.1</dep.plugin.site.version>
         <dep.plugin.project-info-reports.version>3.5.0</dep.plugin.project-info-reports.version>
-        <dep.plugin.sortpom.version>3.3.0</dep.plugin.sortpom.version>
+        <dep.plugin.sortpom.version>3.4.1</dep.plugin.sortpom.version>
 
-        <dep.checkstyle.version>10.13.0</dep.checkstyle.version>
+        <dep.checkstyle.version>10.15.0</dep.checkstyle.version>
         <dep.pmd.version>6.55.0</dep.pmd.version>
 
         <dep.slf4j.version>2.0.12</dep.slf4j.version>
         <dep.junit.version>5.10.2</dep.junit.version>
-        <dep.mockito.version>5.10.0</dep.mockito.version>
+        <dep.mockito.version>5.11.0</dep.mockito.version>
 
         <proj.check.skip-checkstyle>false</proj.check.skip-checkstyle>
         <proj.check.skip-pmd>false</proj.check.skip-pmd>
@@ -167,13 +169,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-plugin-plugin</artifactId>
-                    <version>3.11.0</version>
+                    <version>${dep.plugin.plugin.version}</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-plugin-report-plugin</artifactId>
-                    <version>3.11.0</version>
+                    <version>${dep.plugin.plugin-report.version}</version>
                 </plugin>
 
                 <plugin>

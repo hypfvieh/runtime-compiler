@@ -22,7 +22,7 @@
     <properties>
         <dep.maven.version>3.9.5</dep.maven.version>
         <dep.maven-plugin-annotations.version>3.10.1</dep.maven-plugin-annotations.version>
-        <dep.plexus-component-annotations.version>2.1.1</dep.plexus-component-annotations.version>
+        <dep.plexus-component-annotations.version>2.2.0</dep.plexus-component-annotations.version>
 
         <parentDir>${project.parent.basedir}</parentDir>
     </properties>
