@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Helper class to create a JVM process running the given compiled static main.
  *
- * @author hypfvieh
+ * @author hypfvieh/spannm
  * @since 1.0.0 - 2024-01-25
  */
 public class ForkHelper {
@@ -28,7 +28,7 @@ public class ForkHelper {
 
     private final File           workingDirectory;
 
-    public ForkHelper(Log _logger, File _workingDirectory) {
+    ForkHelper(Log _logger, File _workingDirectory) {
         logger = _logger;
         workingDirectory = _workingDirectory;
     }
@@ -44,25 +44,26 @@ public class ForkHelper {
      *
      * @return exit code of forked JVM or -1 if execution of fork failed due to exception
      */
-    public int createAndRunJvm(List<File> _classPath, List<File> _modulePath, String _compiledMain, String[] _args, Properties _systemProperties) {
+    int createAndRunJvm(List<File> _classPath, List<File> _modulePath, String _compiledMain, String[] _args, Properties _systemProperties) {
         String jvmToUse = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+
+        boolean isWin = System.getProperty("os.name").toLowerCase().startsWith("win");
+        String pathSeparator = isWin ? ";" : ":"; // path separator is os-specific
 
         List<String> cmd = new ArrayList<>();
         cmd.add(jvmToUse);
         if (_classPath != null && !_classPath.isEmpty()) {
-            String clzPath = _classPath.stream().map(File::getAbsolutePath).collect(Collectors.joining(":"));
-            cmd.add("-cp");
-            cmd.add(clzPath);
+            String clzPath = _classPath.stream().map(File::getAbsolutePath).collect(Collectors.joining(pathSeparator));
+            cmd.addAll(List.of("-cp", clzPath));
         }
 
         if (isJava9OrHigher(jvmToUse) && _modulePath != null && !_modulePath.isEmpty()) {
-            String modulePath = _modulePath.stream().map(File::getAbsolutePath).collect(Collectors.joining(":"));
-            cmd.add("-p");
-            cmd.add(modulePath);
+            String modulePath = _modulePath.stream().map(File::getAbsolutePath).collect(Collectors.joining(pathSeparator));
+            cmd.addAll(List.of("-p", modulePath));
         }
 
         Optional.ofNullable(_systemProperties).ifPresent(s ->
-            s.stringPropertyNames().forEach(p -> cmd.add("-D" + p + "=" + _systemProperties.getProperty(p))));
+            s.stringPropertyNames().forEach(p -> cmd.add("-D" + p + '=' + _systemProperties.getProperty(p))));
 
         cmd.add(_compiledMain);
 
